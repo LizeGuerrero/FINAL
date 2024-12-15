@@ -21,3 +21,8 @@ export interface User {
     email: string;
     password: string;
   }
+
+  export interface ErrorResponse {
+    status: number; // Código de estado HTTP, como 400, 404, etc.
+    mensaje: string; // Mensaje del error proporcionado por la API
+  }

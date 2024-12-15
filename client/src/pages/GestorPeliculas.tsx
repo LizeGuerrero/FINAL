@@ -1,37 +1,12 @@
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import {getPeliculas, addPelicula, updatePelicula, deletePelicula,
+import {
+    getPeliculas, addPelicula, updatePelicula, deletePelicula,
 } from "../services/PeliculaService";
-import { getDirectores } from "../services/DirectorService";
+import { getDirectores } from "../services/DirectorService"; // Importa el servicio de directores exactamente el get
 import { getGeneros } from "../services/GeneroService";
 import "./styles/GestorDePeliculas.css";
-
-interface Pelicula {
-    _id?: string; // or mongoose.Types.ObjectId, depending on your setup
-    titulo: string;
-    duracion: number;
-    sinopsis: string;
-    director_id: Director;
-    generos: Genero[]; // Or more complex types if needed
-    fecha_lanzamiento: Date;
-}
-interface Director {
-    _id: string;
-    nombre_director: string;
-}
-interface Genero {
-    _id: string;
-    nombre_genero: string;
-}
-interface Formulario {
-    _id?: string;
-    titulo: string;
-    duracion: number;
-    sinopsis: string;
-    director_id: string;
-    fecha_lanzamiento: Date;
-    generos: string[]; // Array de IDs de géneros
-}
+import { Pelicula, Genero, Director, Formulario } from "../types/Pelicula";
 
 
 function GestorPeliculas() {

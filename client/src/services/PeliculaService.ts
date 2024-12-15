@@ -1,12 +1,30 @@
+import axios from 'axios';
+
+// Define interfaces for type safety
+interface Pelicula {
+  id?: string;
+  titulo: string;
+  duracion: number;
+  sinopsis: string;
+  director_id: string;
+  generos?: string[];
+  fecha_lanzamiento: Date;
+}
+
+interface Director {
+  id: string;
+  nombre: string;
+}
+
 // Crear la URL base de la API
-const API_URL = "http://localhost:5000/admin/peliculas";// URL base para la API de peliculas
+const API_URL = import.meta.env.VITE_API_URL + "/admin/peliculas";
 
 // Función para obtener todas las películas
-export const getPeliculas = async () => {
+export const getPeliculas = async (): Promise<Pelicula[]> => {
   try {
     const response = await fetch(API_URL);
     if (!response.ok) {
-      throw new Error("Error al obtener las películas");// suele ser porque no se cargó la BD
+      throw new Error("Error al obtener las películas");
     }
     return await response.json();
   } catch (error) {
@@ -16,7 +34,7 @@ export const getPeliculas = async () => {
 };
 
 // Función para obtener una película por ID
-export const getPeliculaById = async (id) => {
+export const getPeliculaById = async (id: string): Promise<Pelicula> => {
   try {
     const response = await fetch(`${API_URL}/${id}`);
     if (!response.ok) {
@@ -30,7 +48,7 @@ export const getPeliculaById = async (id) => {
 };
 
 // Función para agregar una nueva película
-export const addPelicula = async (pelicula) => {
+export const addPelicula = async (pelicula: Pelicula): Promise<Pelicula> => {
   try {
     const response = await fetch(API_URL, {
       method: "POST",
@@ -48,7 +66,7 @@ export const addPelicula = async (pelicula) => {
 };
 
 // Función para actualizar una película existente
-export const updatePelicula = async (id, pelicula) => {
+export const updatePelicula = async (id: string, pelicula: Pelicula): Promise<Pelicula> => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
@@ -65,7 +83,8 @@ export const updatePelicula = async (id, pelicula) => {
   }
 };
 
-export const deletePelicula = async (id) => {
+// Función para eliminar una película
+export const deletePelicula = async (id: string): Promise<void> => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
@@ -75,9 +94,8 @@ export const deletePelicula = async (id) => {
       throw new Error("Error al eliminar la película");
     }
 
-    // Verificar si hay contenido en la respuesta antes de intentar convertirlo a JSON
+    // Código 204 indica que la eliminación fue exitosa, pero no hay contenido
     if (response.status === 204) {
-      // Código 204 indica que la eliminación fue exitosa, pero no hay contenido
       return;
     }
 
@@ -89,10 +107,8 @@ export const deletePelicula = async (id) => {
   }
 };
 
-// services/PeliculaService.js
-import axios from 'axios';
-
-export const getDirectores = async () => {
+// Función para obtener directores
+export const getDirectores = async (): Promise<Director[]> => {
   try {
     const response = await axios.get('/admin/directores');
     return response.data;
