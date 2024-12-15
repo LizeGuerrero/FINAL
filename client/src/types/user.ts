@@ -2,7 +2,7 @@ export interface User {
     id: string;
     name: string;
     email: string;
-    role: 'user' | 'admin';  // Definimos los posibles roles
+    role: 'user' | 'admin'| 'superadmin';  // Definimos los posibles roles
   }
   
   export interface AuthContextType {
