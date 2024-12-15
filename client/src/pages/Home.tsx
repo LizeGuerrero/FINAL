@@ -1,11 +1,19 @@
-// src/pages/Home.tsx
 import { useState, useEffect } from "react";
 import { getPeliculas } from "../services/PeliculaService";
-import { Pelicula } from "../types/Pelicula"; // Importar el tipo Pelicula
 import "./styles/Home.css";
 
+// Define the Pelicula type
+type Pelicula = {
+  _id: string;
+  titulo: string;
+  duracion: number;
+  sinopsis: string;
+  fecha_lanzamiento: string;
+  imagenes?: { url: string }[];
+};
+
 const Home = () => {
-  const [peliculas, setPeliculas] = useState<Pelicula[]>([]); // Tipar el estado con el tipo Pelicula
+  const [peliculas, setPeliculas] = useState<Pelicula[]>([]);
 
   // Cargar las películas al montar el componente
   useEffect(() => {
@@ -15,7 +23,7 @@ const Home = () => {
   const loadPeliculas = async () => {
     try {
       const data = await getPeliculas();
-      setPeliculas(data);
+      setPeliculas(data as unknown as Pelicula[]);
     } catch (error) {
       console.error("Error al cargar películas:", error);
     }
@@ -41,6 +49,7 @@ const Home = () => {
                 <strong>Fecha de Lanzamiento:</strong>{" "}
                 {new Date(pelicula.fecha_lanzamiento).toLocaleDateString()}
               </p>
+              
             </div>
           ))
         )}
