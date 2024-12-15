@@ -1,0 +1,56 @@
+/* Estilo de la tabla */
+table {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+    font-size: 1rem;
+    background-color: #f5f0ff; /* Color de fondo de la tabla */
+    border-radius: 8px; /* Bordes redondeados para la tabla */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para la tabla */
+  }
+  
+  /* Estilo de las celdas de la tabla */
+  th,
+  td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: #333; /* Color del texto dentro de las celdas */
+  }
+  
+  th {
+    background-color: #7055b0;
+    color: white; /* Color de texto de los encabezados */
+  }
+  
+  tr:hover {
+    background-color: #eafaf4; /* Color al pasar el ratón sobre las filas */
+  }
+  
+  /* Estilo de los botones de acción */
+  button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button:nth-child(1) {
+    background-color: #9283e5;
+    color: white;
+  }
+  
+  button:nth-child(1):hover {
+    background-color: #4551a0;
+  }
+  
+  button:nth-child(2) {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  button:nth-child(2):hover {
+    background-color: #e53935;
+  }
+  

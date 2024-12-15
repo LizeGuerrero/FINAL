@@ -20,6 +20,7 @@ function GestorPeliculas() {
         director_id: "",
         fecha_lanzamiento: new Date(),
         generos: [],
+        imagen: "",
     });
     const [editingId, setEditingId] = useState<string | null>(null); //Esto es como
     useEffect(() => {
@@ -80,6 +81,7 @@ function GestorPeliculas() {
             director_id: "",
             generos: [],
             fecha_lanzamiento: new Date(),
+            imagen: "",
         });
 
         loadPeliculas(); // Recargar la lista de películas
@@ -96,7 +98,8 @@ function GestorPeliculas() {
             ...pelicula,
             director_id: pelicula.director_id._id,
             generos: pelicula.generos.map((genero) => genero._id),
-            fecha_lanzamiento: new Date(pelicula.fecha_lanzamiento), // Asegúrate de que sea un objeto Date
+            fecha_lanzamiento: new Date(pelicula.fecha_lanzamiento),
+            imagen: pelicula.imagen,
         });
         setEditingId(pelicula._id);
         Swal.fire("Modo de edición", `Editando: ${pelicula.titulo}`, "info");
@@ -111,6 +114,7 @@ function GestorPeliculas() {
             director_id: "",
             fecha_lanzamiento: new Date(),
             generos: [],
+            imagen: "",
         });
         setEditingId(null);
         Swal.fire("Modo edición cancelado", "Has salido del modo edición", "info");
@@ -170,7 +174,12 @@ function GestorPeliculas() {
                     value={form.sinopsis}
                     onChange={handleChange}
                 />
-
+                    <input
+    name="imagen"
+    placeholder="URL de la imagen"
+    value={form.imagen}
+    onChange={handleChange} // Esto es para actualizar la URL de la imagen en el estado
+/>
                 {/* Dropdown para seleccionar el director */}
                 <select
                     name="director_id"
@@ -234,7 +243,13 @@ function GestorPeliculas() {
                             <h2>{pelicula.titulo}</h2>
                         </div>
                         {/* Main Card */}
+                        
                         <div className="main-card">
+                        <img 
+    src={pelicula.imagen} 
+    alt={pelicula.titulo} 
+    className="movie-image" 
+/>
                             <p><strong>Duración:</strong> {pelicula.duracion} minutos</p>
                             <p><strong>Sinopsis:</strong> {pelicula.sinopsis}</p>
                             <p>

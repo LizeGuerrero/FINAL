@@ -9,6 +9,7 @@ interface Pelicula {
   director_id: string;
   generos?: string[];
   fecha_lanzamiento: Date;
+  imagen: string;
 }
 
 interface Director {

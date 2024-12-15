@@ -26,7 +26,17 @@ const peliculaSchema = new mongoose.Schema({
     fecha_lanzamiento: {
         type: Date,
         required: true,
-    }
+    },
+    imagen: {
+        type: String,
+        required: true,
+        validate: {
+            validator: function (v) {
+                return /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))$/i.test(v); // Expresión regular para URLs de imágenes
+            },
+            message: "La URL de la imagen no es válida.",
+        },
+    },
 });
 
 const Pelicula = mongoose.model('peliculas', peliculaSchema);

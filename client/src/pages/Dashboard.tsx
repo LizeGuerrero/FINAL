@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getUsers, createUser, deleteUser, updateUser } from '../services/userService';
 import { User, CreateUser } from '../types/superuseradmin'; // Importando los tipos
 import Swal from 'sweetalert2';
-
+import './styles/Dashboard.css';
 const Dashboard: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]); // Almacenar los usuarios
   const [newUser, setNewUser] = useState<CreateUser>({
@@ -12,6 +12,8 @@ const Dashboard: React.FC = () => {
     role: 'user', // Valor por defecto
     isActive: true,
   }); // Estado para el formulario de crear usuario
+
+  const [editingUserId, setEditingUserId] = useState<string | null>(null); // Para determinar si estamos editando un usuario
 
   useEffect(() => {
     fetchUsers(); // Cargar usuarios cuando el componente se monte
@@ -29,27 +31,33 @@ const Dashboard: React.FC = () => {
   };
 
   // Función para manejar el cambio de los campos del formulario
- // Cambiar el tipo de handleChange
-const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-  const { name, value } = e.target;
-  setNewUser((prevState) => ({
-    ...prevState,
-    [name]: value,
-  }));
-};
-
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setNewUser((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
   // Función para crear un nuevo usuario
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await createUser(newUser);
-      Swal.fire('Éxito', 'Usuario creado correctamente.', 'success');
-      fetchUsers(); // Volver a cargar los usuarios después de crear uno nuevo
+      if (editingUserId) {
+        // Si estamos editando, actualizamos el usuario
+        await updateUser(editingUserId, newUser);
+        Swal.fire('Éxito', 'Usuario actualizado correctamente.', 'success');
+      } else {
+        // Si no estamos editando, creamos un nuevo usuario
+        await createUser(newUser);
+        Swal.fire('Éxito', 'Usuario creado correctamente.', 'success');
+      }
+      fetchUsers(); // Volver a cargar los usuarios después de la acción
       setNewUser({ username: '', email: '', password: '', role: 'user', isActive: true }); // Limpiar el formulario
+      setEditingUserId(null); // Restablecer el estado de edición
     } catch (error) {
-      console.error('Error al crear usuario', error);
-      Swal.fire('Error', 'Hubo un error al crear el usuario.', 'error');
+      console.error('Error al crear o actualizar usuario', error);
+      Swal.fire('Error', 'Hubo un error al crear o actualizar el usuario.', 'error');
     }
   };
 
@@ -65,27 +73,18 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     }
   };
 
-  // Función para actualizar un usuario
-  const handleUpdateUser = async (id: string) => {
-    const userToUpdate = users.find((user) => user._id === id);
-    
-    if (userToUpdate) {
-      const updatedUser: CreateUser = {
-        username: userToUpdate.username || '',  // Proporcionar valor por defecto
-        email: userToUpdate.email || '',
-        password: '',  // En este caso podrías dejar la contraseña vacía o pedir al usuario que la ingrese
-        role: userToUpdate.role,
-        isActive: userToUpdate.isActive,
-      };
-  
-      try {
-        await updateUser(id, updatedUser);
-        Swal.fire('Actualizado', 'Usuario actualizado correctamente.', 'success');
-        fetchUsers();
-      } catch (error) {
-        console.error('Error al actualizar usuario', error);
-        Swal.fire('Error', 'Hubo un error al actualizar el usuario.', 'error');
-      }
+  // Función para editar un usuario
+  const handleEditUser = (id: string) => {
+    const userToEdit = users.find((user) => user._id === id);
+    if (userToEdit) {
+      setNewUser({
+        username: userToEdit.username,
+        email: userToEdit.email,
+        password: '', // La contraseña no la actualizamos por defecto
+        role: userToEdit.role,
+        isActive: userToEdit.isActive,
+      });
+      setEditingUserId(id); // Establecer el ID del usuario que estamos editando
     }
   };
 
@@ -93,7 +92,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     <div>
       <h1>Dashboard de Usuarios</h1>
 
-      {/* Formulario para crear un nuevo usuario */}
+      {/* Formulario para crear o editar un usuario */}
       <form onSubmit={handleCreateUser}>
         <input
           type="text"
@@ -124,7 +123,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
           <option value="admin">Administrador</option>
           <option value="superadmin">Superadministrador</option>
         </select>
-        <button type="submit">Crear Usuario</button>
+        <button type="submit">{editingUserId ? 'Actualizar Usuario' : 'Crear Usuario'}</button>
       </form>
 
       {/* Lista de usuarios */}
@@ -146,7 +145,7 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
               <td>{user.role}</td>
               <td>{user.isActive ? 'Sí' : 'No'}</td>
               <td>
-                <button onClick={() => handleUpdateUser(user._id)}>Actualizar</button>
+                <button onClick={() => handleEditUser(user._id)}>Editar</button>
                 <button onClick={() => handleDeleteUser(user._id)}>Eliminar</button>
               </td>
             </tr>

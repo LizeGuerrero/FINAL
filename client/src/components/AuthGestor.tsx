@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { login, register } from "../services/authService";
 import { useAuth } from "../context/AuthContext";
-import "./AuthGestor.css";
+import "./styles/AuthGestor.css";
 
 // Tipado de las propiedades del componente
 interface AuthGestorProps {

@@ -6,7 +6,7 @@ export interface Pelicula {
     director_id: Director;
     generos: Genero[]; // Or more complex types if needed
     fecha_lanzamiento: Date;
-    imagenes?: { url: string }[];
+    imagen: string;
 }
 
 export interface Director {
@@ -25,6 +25,7 @@ export interface Formulario {
     director_id: string;
     fecha_lanzamiento: Date;
     generos: string[]; // Array de IDs de géneros
+    imagen: string;
 }
 
 export interface Imagen {

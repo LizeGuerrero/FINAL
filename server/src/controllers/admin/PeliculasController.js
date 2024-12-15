@@ -9,7 +9,8 @@ const getPeliculas = async (req, res) => {
 
       const peliculasConFechaFormateada = peliculas.map((pelicula) => ({
           ...pelicula.toObject(),
-          fecha_lanzamiento: pelicula.fecha_lanzamiento.toISOString().split("T")[0], // Convertir a YYYY-MM-DD
+          fecha_lanzamiento: pelicula.fecha_lanzamiento.toISOString().split("T")[0],
+          imagen: pelicula.imagen,
       }));
 
       res.json(peliculasConFechaFormateada);
@@ -22,11 +23,13 @@ const getPeliculas = async (req, res) => {
 // Obtener una película por ID
 const getPeliculaById = async (req, res) => {
   try {
-    const pelicula = await Pelicula.findById(req.params.id);
-    if (!pelicula) return res.status(404).json({ error: 'Película no encontrada' });
-    res.json(pelicula);
+      const pelicula = await Pelicula.findById(req.params.id)
+          .populate("director_id", "nombre_director")
+          .populate("generos", "nombre_genero");
+      if (!pelicula) return res.status(404).json({ error: "Película no encontrada" });
+      res.json(pelicula);
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener la película' });
+      res.status(500).json({ error: "Error al obtener la película" });
   }
 };
 
@@ -41,10 +44,15 @@ const addPelicula = async (req, res) => {
       console.log("Géneros encontrados:", generos); // Verifica los géneros encontrados
 
       const peliculaData = {
-          ...req.body,
+          ...req.body, // Esto incluye el campo `imagen` si se envió desde el frontend
           generos: generos.map(g => g._id),
           fecha_lanzamiento: new Date(req.body.fecha_lanzamiento),
       };
+
+      // Verificar que el campo `imagen` está presente y es válido
+      if (!peliculaData.imagen || typeof peliculaData.imagen !== "string") {
+          return res.status(400).json({ error: "El campo 'imagen' es obligatorio y debe ser un string." });
+      }
 
       const newPelicula = new Pelicula(peliculaData);
       await newPelicula.save();
@@ -55,16 +63,22 @@ const addPelicula = async (req, res) => {
   }
 };
 
+
 // Editar una película existente
 const updatePelicula = async (req, res) => {
   try {
-    const updatedPelicula = await Pelicula.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedPelicula) return res.status(404).json({ error: 'Película no encontrada' });
-    res.json(updatedPelicula);
+      if (req.body.imagen && typeof req.body.imagen !== "string") {
+          return res.status(400).json({ error: "El campo 'imagen' debe ser un string válido." });
+      }
+
+      const updatedPelicula = await Pelicula.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      if (!updatedPelicula) return res.status(404).json({ error: "Película no encontrada" });
+      res.json(updatedPelicula);
   } catch (error) {
-    res.status(500).json({ error: 'Error al editar película' });
+      res.status(500).json({ error: "Error al editar película" });
   }
 };
+
 
 // Eliminar una película
 const deletePelicula = async (req, res) => {

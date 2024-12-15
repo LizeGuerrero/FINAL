@@ -13,6 +13,8 @@ dotenv.config();
 import routes from './routes/routes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import authRoutes from './routes/auth.routes.js';
+import userRoutes from './routes/users.routes.js';
+
 
 // Configurar el servidor Express
 const app = express();
@@ -30,6 +32,7 @@ app.use(morgan('dev'));  // Logging de solicitudes HTTP
 app.use(routes);            // Rutas generales
 app.use('/admin', adminRoutes); // Rutas de administración
 app.use('/users', authRoutes); // Rutas de autenticación
+app.use('/superadmin', userRoutes);
 
 // Conexión a MongoDB
 // Conectar a MongoDB usando la URI del archivo .env

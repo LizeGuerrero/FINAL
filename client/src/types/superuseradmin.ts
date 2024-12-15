@@ -10,6 +10,7 @@ export interface User {
   }
 
   export interface CreateUser {
+    id?: string;
     username: string;  // El nombre de usuario, obligatorio, mínimo 3 caracteres
     email: string;     // El correo electrónico, obligatorio
     password: string;  // La contraseña, obligatoria, mínimo 6 caracteres
