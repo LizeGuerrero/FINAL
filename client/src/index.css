@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #dbd6eb;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -24,15 +24,26 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  color: #ffffff;
+  background: linear-gradient(90deg, #acc9fe, #6a11cb);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 20px;
+  margin: 20px 0;
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
 button {
@@ -66,3 +77,37 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Personalización general de la barra de desplazamiento */
+::-webkit-scrollbar {
+  width: 20px;/* Ancho de la barra de desplazamiento */
+  height: 12px; /* Altura de la barra horizontal */
+}
+
+/* El "track" es el fondo de la barra */
+::-webkit-scrollbar-track {
+  background-color: #dcbbf5; /* Color de fondo del track */
+  border-radius: 10px; /* Bordes redondeados */
+}
+
+/* El "thumb" es la parte de la barra que se mueve */
+::-webkit-scrollbar-thumb {
+  background-color: #837fff; /* Color de la parte movible */
+  border-radius: 10px; /* Bordes redondeados */
+  transition: background-color 0.3s ease; /* Transición suave para el color */
+}
+
+/* Efecto hover sobre la parte movible */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #99afff; /* Color más oscuro cuando se pasa el ratón */
+}
+
+/* Personalización de la barra horizontal */
+::-webkit-scrollbar-horizontal {
+  height: 8px; /* Altura de la barra horizontal */
+}
+
+::-webkit-scrollbar-track-piece {
+  background: rgba(0, 0, 0, 0.1);
+}
+

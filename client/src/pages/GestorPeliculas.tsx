@@ -88,21 +88,21 @@ function GestorPeliculas() {
 
     const handleEdit = (pelicula: Pelicula) => {
         if (!pelicula._id) {
-          Swal.fire("Error", "ID de película no encontrado", "error");
-          return;
+            Swal.fire("Error", "ID de película no encontrado", "error");
+            return;
         }
-      
+
         setForm({
-          ...pelicula,
-          director_id: pelicula.director_id._id,
-          generos: pelicula.generos.map((genero) => genero._id),
-          fecha_lanzamiento: new Date(pelicula.fecha_lanzamiento), // Asegúrate de que sea un objeto Date
+            ...pelicula,
+            director_id: pelicula.director_id._id,
+            generos: pelicula.generos.map((genero) => genero._id),
+            fecha_lanzamiento: new Date(pelicula.fecha_lanzamiento), // Asegúrate de que sea un objeto Date
         });
         setEditingId(pelicula._id);
         Swal.fire("Modo de edición", `Editando: ${pelicula.titulo}`, "info");
-      };
-      
-      const handleCancelEdit = () => {
+    };
+
+    const handleCancelEdit = () => {
         // Limpia el formulario y sale del modo edición
         setForm({
             titulo: "",
@@ -205,62 +205,52 @@ function GestorPeliculas() {
                 </div>
 
                 <input
-    type="date"
-    name="fecha_lanzamiento"
-    placeholder="Fecha de Lanzamiento"
-    value={
-        form.fecha_lanzamiento 
-            ? new Date(form.fecha_lanzamiento).toISOString().split('T')[0]
-            : ''
-    }
-    onChange={handleChange}
-/>
+                    type="date"
+                    name="fecha_lanzamiento"
+                    placeholder="Fecha de Lanzamiento"
+                    value={
+                        form.fecha_lanzamiento
+                            ? new Date(form.fecha_lanzamiento).toISOString().split('T')[0]
+                            : ''
+                    }
+                    onChange={handleChange}
+                />
 
-<button type="submit">
-            {editingId ? "Actualizar" : "Agregar"}
-        </button>
-        {editingId && (
-            <button type="button" onClick={handleCancelEdit}>
-                Cancelar edición
-            </button>
-        )}
+                <button type="submit">
+                    {editingId ? "Actualizar" : "Agregar"}
+                </button>
+                {editingId && (
+                    <button type="button" onClick={handleCancelEdit}>
+                        Cancelar edición
+                    </button>
+                )}
             </form>
 
-            <div className="seccionPelicula">
+            <section className="seccionPelicula">
                 {peliculas.map((pelicula) => (
-                    <article key={pelicula._id} className="peliculaCard">
-                        <header className="pelicula-header">
+                    <article key={pelicula._id} className="pelicula-card">
+                        {/* Header Card */}
+                        <div className="header-card">
                             <h2>{pelicula.titulo}</h2>
-                            <p className="pelicula-fecha">
-                                {new Date(
-                                    pelicula.fecha_lanzamiento
-                                ).toLocaleDateString("es-ES", {
-                                    timeZone: "UTC",
-                                })}
-                            </p>
-                        </header>
-
-                        <section className="pelicula-sinopsis">
-                            <p>{pelicula.sinopsis}</p>
-                        </section>
-
-                        <section className="pelicula-director">
+                        </div>
+                        {/* Main Card */}
+                        <div className="main-card">
+                            <p><strong>Duración:</strong> {pelicula.duracion} minutos</p>
+                            <p><strong>Sinopsis:</strong> {pelicula.sinopsis}</p>
                             <p>
                                 <strong>Director: </strong>
                                 {pelicula.director_id.nombre_director}
                             </p>
-                        </section>
-
-                        <section className="pelicula-generos">
+                            <p><strong>Fecha de Lanzamiento:</strong> {new Date(pelicula.fecha_lanzamiento).toLocaleDateString()}</p>
                             <p>
                                 <strong>Géneros: </strong>
                                 {pelicula.generos
                                     .map((genero) => genero.nombre_genero)
                                     .join(", ")}
                             </p>
-                        </section>
-
-                        <footer className="pelicula-actions">
+                        </div>
+                        {/* Footer Card */}
+                        <section className="footer-card">
                             <button
                                 className="edit-btn"
                                 onClick={() => handleEdit(pelicula)}
@@ -279,10 +269,10 @@ function GestorPeliculas() {
                             >
                                 Eliminar
                             </button>
-                        </footer>
+                        </section>
                     </article>
                 ))}
-            </div>
+            </section>
         </div>
     );
 }

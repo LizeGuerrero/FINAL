@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 
+
 // Definir el tipo del estado del formulario
 type FormData = {
   name: string;
@@ -54,7 +55,7 @@ const Contact = () => {
   return (
     <div className="formulario-container">
       <div className="form">
-        <h2>Contáctanos</h2>
+        <h1>Contáctanos</h1>
         <form onSubmit={handleSubmit}>
           {/* Campo de Nombre */}
           <div className="form-group">

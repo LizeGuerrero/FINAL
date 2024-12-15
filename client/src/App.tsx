@@ -4,14 +4,16 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import GestorPeliculas from './pages/GestorPeliculas';
-import Header from './components/Header';
+import Navbar from './components/Navbar';
+import Dashboard from './pages/Dashboard';
 
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <Header />
+        <Navbar />
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -32,7 +34,7 @@ const App: React.FC = () => {
             path="/admin" 
             element={
               <PrivateRoute requiredRole="admin">
-                <GestorPeliculas />
+                <Dashboard />
               </PrivateRoute>
             } 
           />
