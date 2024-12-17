@@ -54,6 +54,10 @@
   flex-grow: 1;
 }
 
+.main-card img {
+  width: 250px;
+}
+
 .main-card p {
   font-size: 1rem;
   color: #555;

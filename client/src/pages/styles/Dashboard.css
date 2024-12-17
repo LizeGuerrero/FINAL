@@ -57,7 +57,7 @@ button:nth-child(2):hover {
 @media (max-width: 480px) {
   body {
     width: 768px;
-    height: 1400px;
+    height: auto;
   }  
   table {
       font-size: 0.9rem;
@@ -94,7 +94,7 @@ button:nth-child(2):hover {
   }
   body {
     width: auto;
-    height: 14000px;
+    height: 1400px;
   }  
   th, td {
       padding: 12px;
@@ -111,7 +111,7 @@ button:nth-child(2):hover {
   }
   body {
     width: auto;
-    height: 14000px;
+    height: auto;
   } 
   th, td {
       padding: 14px;
