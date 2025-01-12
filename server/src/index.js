@@ -21,7 +21,11 @@ const app = express();
 
 // Middlewares
 app.use(express.json()); // Análisis de solicitudes JSON
-app.use(cors());         // Habilitar CORS
+app.use(cors({
+  origin: 'https://chiguiro.vercel.app', // Autoriza este dominio específico
+  methods: 'GET,POST,PUT,DELETE', // Métodos permitidos
+  credentials: true // Si necesitas enviar cookies o encabezados de autenticación
+}));
 app.use(morgan('dev'));  // Logging de solicitudes HTTP
 
 
